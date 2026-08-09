@@ -1,2 +1,649 @@
-# mds.portfolio.github.io
-Personal Portfolio website
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marcello Di Staso — Game Designer</title>
+<meta name="description" content="Game Designer specializing in rules, mechanics and systems design across digital and tabletop projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#11161c;
+    --ink-2:#161d25;
+    --parchment:#f1e8d6;
+    --parchment-dim:#e4d9c2;
+    --gold:#c9a227;
+    --gold-dim:#8f7420;
+    --teal:#3f7d78;
+    --ember:#b3503f;
+    --text:#ece4d3;
+    --text-dim:#a89f8c;
+    --line: rgba(236,228,211,0.14);
+    --radius: 3px;
+    --maxw: 1080px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--gold); color:var(--ink);}
+  a{color:inherit;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+  h1,h2,h3{font-family:'Spectral', serif; font-weight:600; letter-spacing:-0.01em;}
+  .mono{font-family:'JetBrains Mono', monospace;}
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--gold);
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    background:rgba(17,22,28,0.86);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:64px;
+  }
+  .logo{
+    font-family:'Spectral', serif; font-weight:600; font-size:18px; letter-spacing:0.02em;
+  }
+  .logo span{color:var(--gold);}
+  .navlinks{display:flex; gap:28px; font-size:14px;}
+  .navlinks a{
+    text-decoration:none; color:var(--text-dim);
+    transition:color .2s ease;
+  }
+  .navlinks a:hover{color:var(--gold);}
+  .navlinks a:focus-visible, a:focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
+  .navcta{
+    font-family:'JetBrains Mono', monospace; font-size:12px;
+    border:1px solid var(--gold-dim); color:var(--gold);
+    padding:8px 14px; text-decoration:none; border-radius:var(--radius);
+    transition:background .2s ease, color .2s ease;
+    white-space:nowrap;
+  }
+  .navcta:hover{background:var(--gold); color:var(--ink);}
+  .navtoggle{display:none; background:none; border:none; color:var(--text); font-size:22px; cursor:pointer;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:168px 0 96px;
+    background:
+      radial-gradient(ellipse 900px 500px at 80% -10%, rgba(201,162,39,0.10), transparent 60%),
+      radial-gradient(ellipse 700px 400px at 0% 0%, rgba(63,125,120,0.10), transparent 55%);
+    border-bottom:1px solid var(--line);
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-grid{
+    position:absolute; inset:0; opacity:0.05;
+    background-image:
+      linear-gradient(var(--text) 1px, transparent 1px),
+      linear-gradient(90deg, var(--text) 1px, transparent 1px);
+    background-size:42px 42px;
+    mask-image:linear-gradient(to bottom, black, transparent 85%);
+  }
+  .hero .wrap{position:relative;}
+  .hero-kicker{margin-bottom:22px;}
+  .hero h1{
+    font-size:clamp(38px, 6vw, 64px);
+    line-height:1.06;
+    max-width:820px;
+    margin-bottom:22px;
+  }
+  .hero h1 em{font-style:italic; color:var(--gold);}
+  .hero p.lede{
+    font-size:18px; color:var(--text-dim); max-width:560px; margin-bottom:40px;
+  }
+  .hero-actions{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:56px;}
+  .btn{
+    font-family:'JetBrains Mono', monospace; font-size:13px;
+    padding:12px 20px; border-radius:var(--radius); text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px;
+    transition:transform .15s ease, background .2s ease, border-color .2s ease;
+  }
+  .btn-primary{background:var(--gold); color:var(--ink); font-weight:600;}
+  .btn-primary:hover{transform:translateY(-1px); background:#dab433;}
+  .btn-ghost{border:1px solid var(--line); color:var(--text);}
+  .btn-ghost:hover{border-color:var(--gold); color:var(--gold);}
+
+  .ledger{
+    display:grid; grid-template-columns:repeat(4, 1fr);
+    border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;
+  }
+  .ledger div{
+    padding:18px 20px; border-right:1px solid var(--line);
+  }
+  .ledger div:last-child{border-right:none;}
+  .ledger .num{font-family:'JetBrains Mono', monospace; font-size:26px; color:var(--gold); display:block;}
+  .ledger .lbl{font-size:12px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.06em;}
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:96px 0;}
+  section + section{border-top:1px solid var(--line);}
+  .section-head{margin-bottom:48px; max-width:640px;}
+  .section-head h2{font-size:clamp(26px,3.4vw,34px); margin-top:10px;}
+  .section-head p{color:var(--text-dim); margin-top:14px; font-size:15.5px;}
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:56px; align-items:start;}
+  .about-body p{color:var(--text-dim); font-size:15.5px; margin-bottom:16px; max-width:52ch;}
+  .about-body strong{color:var(--text); font-weight:600;}
+  .tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px;}
+  .tag{
+    font-family:'JetBrains Mono', monospace; font-size:11.5px;
+    border:1px solid var(--line); color:var(--text-dim);
+    padding:6px 10px; border-radius:2px;
+  }
+  .factfile{
+    border:1px solid var(--line); border-radius:var(--radius);
+    background:var(--ink-2);
+  }
+  .factfile-head{
+    padding:14px 18px; border-bottom:1px solid var(--line);
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.1em;
+    color:var(--gold); text-transform:uppercase;
+  }
+  .factfile dl{padding:6px 18px;}
+  .factfile-row{
+    display:flex; justify-content:space-between; gap:12px;
+    padding:12px 0; border-bottom:1px solid var(--line); font-size:14px;
+  }
+  .factfile-row:last-child{border-bottom:none;}
+  .factfile-row dt{color:var(--text-dim);}
+  .factfile-row dd{font-family:'JetBrains Mono', monospace; text-align:right;}
+
+  /* ---------- PROJECT CARDS ---------- */
+  .filterbar{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:32px;}
+  .filter-btn{
+    font-family:'JetBrains Mono', monospace; font-size:12px;
+    background:none; border:1px solid var(--line); color:var(--text-dim);
+    padding:8px 14px; border-radius:20px; cursor:pointer;
+    transition:all .15s ease;
+  }
+  .filter-btn.active, .filter-btn:hover{border-color:var(--gold); color:var(--gold);}
+
+  .card-grid{display:grid; grid-template-columns:repeat(2, 1fr); gap:22px;}
+  .card{
+    background:var(--parchment); color:#221c10;
+    border-radius:var(--radius); overflow:hidden;
+    display:flex; flex-direction:column;
+    border:1px solid var(--parchment-dim);
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .card:hover{transform:translateY(-3px); box-shadow:0 18px 34px rgba(0,0,0,0.35);}
+  .card-top{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    padding:18px 20px 0;
+  }
+  .card-pip{
+    font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--gold-dim); font-weight:600;
+  }
+  .card-role{
+    font-family:'JetBrains Mono', monospace; font-size:10.5px;
+    color:#7a6f57;
+  }
+  .card h3{font-size:20px; padding:8px 20px 4px; color:#1a1610;}
+  .card .hook{padding:0 20px; font-size:13.5px; color:#6b5f45; font-style:italic; margin-bottom:10px;}
+  .card p.desc{padding:0 20px; font-size:14px; color:#3a3323; margin-bottom:16px; flex:1;}
+  .card-stats{
+    display:flex; border-top:1px solid var(--parchment-dim);
+    margin-top:auto;
+  }
+  .card-stats div{
+    flex:1; padding:12px 14px; border-right:1px solid var(--parchment-dim);
+  }
+  .card-stats div:last-child{border-right:none;}
+  .card-stats .v{font-family:'JetBrains Mono', monospace; font-size:14px; font-weight:600; display:block; color:#1a1610;}
+  .card-stats .k{font-size:10px; text-transform:uppercase; letter-spacing:0.05em; color:#8a7d5f;}
+  .card-link{
+    display:block; text-align:center; padding:11px; font-family:'JetBrains Mono', monospace;
+    font-size:12px; background:#1a1610; color:var(--parchment); text-decoration:none;
+    letter-spacing:0.04em;
+  }
+  .card-link:hover{background:var(--gold-dim);}
+
+  /* ---------- SYSTEMS / DATA ---------- */
+  .data-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+  .data-card{
+    border:1px solid var(--line); border-radius:var(--radius); padding:26px;
+    background:linear-gradient(160deg, rgba(63,125,120,0.07), transparent 60%);
+  }
+  .data-card .eyebrow{margin-bottom:10px;}
+  .data-card h3{font-size:19px; margin-bottom:10px;}
+  .data-card p{color:var(--text-dim); font-size:14.5px; margin-bottom:18px;}
+  .data-card ul{list-style:none; margin-bottom:20px;}
+  .data-card li{
+    font-size:13.5px; color:var(--text-dim); padding:7px 0 7px 18px;
+    border-bottom:1px dashed var(--line); position:relative;
+  }
+  .data-card li:last-child{border-bottom:none;}
+  .data-card li::before{
+    content:"→"; position:absolute; left:0; color:var(--teal);
+  }
+  .data-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'JetBrains Mono', monospace; font-size:12.5px;
+    color:var(--gold); text-decoration:none; border-bottom:1px solid var(--gold-dim);
+    padding-bottom:2px;
+  }
+  .data-link:hover{color:#e0c250;}
+
+  /* ---------- COMPETITIVE RECORD ---------- */
+  table.record{width:100%; border-collapse:collapse; font-size:14px;}
+  table.record th{
+    text-align:left; font-family:'JetBrains Mono', monospace; font-size:11px;
+    text-transform:uppercase; letter-spacing:0.06em; color:var(--text-dim);
+    padding:10px 14px; border-bottom:1px solid var(--line);
+  }
+  table.record td{padding:14px; border-bottom:1px solid var(--line); color:var(--text);}
+  table.record tr:last-child td{border-bottom:none;}
+  .placement{
+    font-family:'JetBrains Mono', monospace; font-weight:600; padding:3px 9px;
+    border-radius:20px; font-size:12px; display:inline-block;
+  }
+  .placement.gold{background:rgba(201,162,39,0.16); color:var(--gold);}
+  .placement.silver{background:rgba(160,160,170,0.16); color:#c7c7cf;}
+  .placement.bronze{background:rgba(179,80,63,0.16); color:#d68974;}
+
+  /* ---------- SKILLS ---------- */
+  .skill-cols{display:grid; grid-template-columns:repeat(3,1fr); gap:32px;}
+  .skill-col h4{
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; text-transform:uppercase;
+    letter-spacing:0.08em; color:var(--gold); margin-bottom:16px;
+  }
+  .skill-col ul{list-style:none;}
+  .skill-col li{
+    font-size:14.5px; color:var(--text-dim); padding:8px 0; border-bottom:1px solid var(--line);
+  }
+  .skill-col li:last-child{border-bottom:none;}
+
+  /* ---------- CONTACT ---------- */
+  .contact{
+    text-align:center; padding-top:88px; padding-bottom:88px;
+  }
+  .contact h2{font-size:clamp(30px,4.4vw,46px); margin:16px auto 20px; max-width:640px;}
+  .contact p{color:var(--text-dim); max-width:480px; margin:0 auto 36px;}
+  .contact-links{display:flex; justify-content:center; gap:16px; flex-wrap:wrap;}
+
+  footer{
+    border-top:1px solid var(--line); padding:28px 0; text-align:center;
+    font-size:12.5px; color:var(--text-dim); font-family:'JetBrains Mono', monospace;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 860px){
+    .about-grid, .data-grid{grid-template-columns:1fr;}
+    .card-grid{grid-template-columns:1fr;}
+    .skill-cols{grid-template-columns:1fr 1fr;}
+    .ledger{grid-template-columns:repeat(2,1fr);}
+    .ledger div:nth-child(2){border-right:none;}
+  }
+  @media (max-width: 620px){
+    .navlinks{
+      position:absolute; top:64px; left:0; right:0;
+      background:var(--ink); border-bottom:1px solid var(--line);
+      flex-direction:column; padding:18px 28px; gap:16px;
+      display:none;
+    }
+    .navlinks.open{display:flex;}
+    .navtoggle{display:block;}
+    .navcta{display:none;}
+    .skill-cols{grid-template-columns:1fr;}
+    table.record{font-size:12.5px;}
+    table.record td, table.record th{padding:10px 8px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important; animation:none !important;}
+  }
+
+  .reveal{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="logo">M<span>·</span>DS</div>
+    <div class="navlinks" id="navlinks">
+      <a href="#work">Work</a>
+      <a href="#systems">Systems &amp; Data</a>
+      <a href="#record">Record</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a class="navcta" href="mailto:marcellodts@gmail.com">Get in touch →</a>
+    <button class="navtoggle" id="navtoggle" aria-label="Toggle navigation">☰</button>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="wrap">
+    <div class="hero-kicker eyebrow">Game Designer — Rules · Mechanics · Systems</div>
+    <h1>I design the rules other people <em>play</em> by.</h1>
+    <p class="lede">Marcello Di Staso — building puzzle mechanics in Unreal Engine, authoring rulesets for tabletop and card games, and modeling the probability behind every encounter, drop, and duel.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#work">See the work ↓</a>
+      <a class="btn btn-ghost" href="mailto:marcellodts@gmail.com">marcellodts@gmail.com</a>
+    </div>
+    <div class="ledger reveal">
+      <div><span class="num">3+</span><span class="lbl">Yrs professional</span></div>
+      <div><span class="num">10+</span><span class="lbl">Yrs competitive CCG</span></div>
+      <div><span class="num">21</span><span class="lbl">Largest team led</span></div>
+      <div><span class="num">6</span><span class="lbl">Shipped projects</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="reveal">
+      <div class="eyebrow">About</div>
+      <h2 style="margin-top:10px; margin-bottom:22px;">Rules first, spectacle second.</h2>
+      <div class="about-body">
+        <p>I got into design the way most rules designers do: by arguing about rulings across a card table. Ten-plus years of competitive CCG play — Pokémon, Yu-Gi-Oh!, Magic, Hearthstone — taught me long before any studio did what makes a ruleset feel fair, and what makes it feel broken.</p>
+        <p>Professionally, that same instinct now goes into <strong>Unreal Engine puzzle and horror levels</strong>, <strong>original tabletop rulesets</strong>, and <strong>probability-driven encounter systems</strong> built from scratch in spreadsheets before a single line of code exists. I've led production teams of up to 21 people as Scrum Master and Lead Tech Designer, and I still can't watch a game system without mentally reverse-engineering its math.</p>
+      </div>
+      <div class="tags">
+        <span class="tag">Unreal Engine 4 / 5</span>
+        <span class="tag">Blueprint Scripting</span>
+        <span class="tag">Rules &amp; Ruleset Authoring</span>
+        <span class="tag">Probability &amp; Balancing</span>
+        <span class="tag">Scrum / Agile</span>
+        <span class="tag">Playtesting</span>
+      </div>
+    </div>
+    <div class="factfile reveal">
+      <div class="factfile-head">Designer File — 01</div>
+      <dl>
+        <div class="factfile-row"><dt>Base</dt><dd>Italy</dd></div>
+        <div class="factfile-row"><dt>Focus</dt><dd>Rules / Systems</dd></div>
+        <div class="factfile-row"><dt>Engines</dt><dd>UE4, UE5</dd></div>
+        <div class="factfile-row"><dt>Languages</dt><dd>IT · PT · EN · ES</dd></div>
+        <div class="factfile-row"><dt>Best result</dt><dd>1st — Pokémon TCG, Madeira '25</dd></div>
+        <div class="factfile-row"><dt>Status</dt><dd style="color:var(--gold)">Open to work</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Selected Work</div>
+      <h2>Six builds, three constraints each: a deadline, a team, and a ruleset.</h2>
+      <p>From 48-hour jam sprints to full academic-year productions — digital and tabletop.</p>
+    </div>
+
+    <div class="filterbar reveal">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="digital">Digital</button>
+      <button class="filter-btn" data-filter="tabletop">Tabletop</button>
+      <button class="filter-btn" data-filter="jam">Game Jam</button>
+    </div>
+
+    <div class="card-grid" id="cardGrid">
+
+      <article class="card reveal" data-cat="digital">
+        <div class="card-top"><span class="card-pip">Case 01 — Digital</span><span class="card-role">UE5.1</span></div>
+        <h3>Maschere</h3>
+        <p class="hook">A horror level with a card game hidden inside it.</p>
+        <p class="desc">Full horror level design with advanced puzzle mechanics, led as Game Designer and Scrum Master for a 21-person team. Includes an original card game built on Neapolitan playing cards, with custom win conditions and card-specific powers.</p>
+        <div class="card-stats">
+          <div><span class="v">21</span><span class="k">Team</span></div>
+          <div><span class="v">17mo</span><span class="k">Duration</span></div>
+          <div><span class="v">1st P</span><span class="k">Role</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="digital">
+        <div class="card-top"><span class="card-pip">Case 02 — Digital</span><span class="card-role">UE4.27</span></div>
+        <h3>Planet Bender</h3>
+        <p class="hook">Two playable maps, one week, zero shortcuts.</p>
+        <p class="desc">Vertical Slice of a third-person platform/puzzle game. Shipped two distinct 5-minute playable maps from scratch in a single week, and resolved an internal team conflict through direct mediation and a postmortem.</p>
+        <div class="card-stats">
+          <div><span class="v">18</span><span class="k">Team</span></div>
+          <div><span class="v">1wk</span><span class="k">Sprint</span></div>
+          <div><span class="v">Lead</span><span class="k">Role</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="jam digital">
+        <div class="card-top"><span class="card-pip">Case 03 — Jam</span><span class="card-role">UE5.5</span></div>
+        <h3>BallSwitch3D</h3>
+        <p class="hook">A physics puzzler built in one uninterrupted sprint.</p>
+        <p class="desc">3D physics puzzler about strategic transformation-switching, designed and shipped during Game Jam Plus. Reached the European Incubation phase, selected among competing international teams.</p>
+        <div class="card-stats">
+          <div><span class="v">48h</span><span class="k">Sprint</span></div>
+          <div><span class="v">EU</span><span class="k">Incubation</span></div>
+          <div><span class="v">Design</span><span class="k">Role</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="jam digital">
+        <div class="card-top"><span class="card-pip">Case 04 — Jam</span><span class="card-role">UE5.3</span></div>
+        <h3>Caso ha Cose</h3>
+        <p class="hook">A humoristic pick-up-and-throw puzzle, pitched live on air.</p>
+        <p class="desc">First-person exploration game built for the Global Game Jam. Placed 3rd for Best Game Award, then pitched live to the academy and jam judges across social media.</p>
+        <div class="card-stats">
+          <div><span class="v">3rd</span><span class="k">Best Game</span></div>
+          <div><span class="v">48h</span><span class="k">Sprint</span></div>
+          <div><span class="v">Design</span><span class="k">Role</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="tabletop">
+        <div class="card-top"><span class="card-pip">Case 05 — Tabletop</span><span class="card-role">Original IP</span></div>
+        <h3>Drinkin' Tour</h3>
+        <p class="hook">A full ruleset, playtested until the table agreed it was fair.</p>
+        <p class="desc">Original multiplayer party board game — my first fully authored IP. Full ruleset and card content, iterated through mutual playtesting with other dev teams, and evaluated for physical production and shipping.</p>
+        <div class="card-stats">
+          <div><span class="v">IdeaG</span><span class="k">Milan</span></div>
+          <div><span class="v">Solo</span><span class="k">Author</span></div>
+          <div><span class="v">Lead</span><span class="k">Role</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal" data-cat="tabletop">
+        <div class="card-top"><span class="card-pip">Case 06 — Systems</span><span class="card-role">Design Doc</span></div>
+        <h3>GoldenX</h3>
+        <p class="hook">An open-world encounter system, weighted to 100%.</p>
+        <p class="desc">Probabilistic encounter and reward system for an original open-world concept: four biomes, weighted variables, weather modifiers, and a secondary luck/morale RNG layer — modeled entirely before any build existed.</p>
+        <div class="card-stats">
+          <div><span class="v">4</span><span class="k">Biomes</span></div>
+          <div><span class="v">100%</span><span class="k">Weighted</span></div>
+          <div><span class="v">Solo</span><span class="k">Author</span></div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section id="systems">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Systems &amp; Data</div>
+      <h2>Before it's a game, it's a spreadsheet.</h2>
+      <p>Two open design documents — built to reverse-engineer existing systems and prove out original ones with real numbers.</p>
+    </div>
+    <div class="data-grid">
+      <div class="data-card reveal">
+        <div class="eyebrow">Reverse-Engineered</div>
+        <h3>Pokémon Gen 1 — Type &amp; AI Calculator</h3>
+        <p>A full mapping of every move learnable by 1st-generation Pokémon against every type's weaknesses and resistances — including a model of the base Pokémon Red AI's min-max move selection.</p>
+        <ul>
+          <li>Complete Gen 1 move × type interaction matrix</li>
+          <li>Physical / Special / Status categorization by move type</li>
+          <li>Min-max decision logic modeled from the original AI</li>
+        </ul>
+        <a class="data-link" href="https://docs.google.com/spreadsheets/d/1qA1iAmqBfD77sjrlHyUbV_2mEWTRr8G2Ujr1h5eD7y4/edit?gid=0" target="_blank" rel="noopener">Open spreadsheet ↗</a>
+      </div>
+      <div class="data-card reveal">
+        <div class="eyebrow">Original System</div>
+        <h3>GoldenX — Opportunity Design</h3>
+        <p>The full probability model behind an abstract open-world game: per-biome encounter weights, time and weather modifiers, loot tables, and a debug sheet validating the math end to end.</p>
+        <ul>
+          <li>Weighted formulas across 4 biomes, normalized to 100%</li>
+          <li>Enemy × variable × time-of-day encounter matrices</li>
+          <li>Luck/morale RNG layer with defined shift probability</li>
+        </ul>
+        <a class="data-link" href="https://docs.google.com/spreadsheets/d/1VLIc8Vm61ZoNxMOOMY9SMtb0rWL5ZjP-BCgfF6A4E_c/edit?gid=0" target="_blank" rel="noopener">Open spreadsheet ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="record">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Competitive Record</div>
+      <h2>10+ years on the other side of the table.</h2>
+      <p>Every ruleset I design gets stress-tested by someone who's spent a decade trying to break rulesets like it.</p>
+    </div>
+    <div class="reveal" style="overflow-x:auto;">
+      <table class="record">
+        <thead>
+          <tr><th>Event</th><th>Game</th><th>Year</th><th>Result</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Regional Tournament, Madeira (PT)</td>
+            <td>Pokémon TCG</td>
+            <td class="mono">2025</td>
+            <td><span class="placement gold">1st place</span></td>
+          </tr>
+          <tr>
+            <td>Regional Tournaments</td>
+            <td>Pokémon TCG</td>
+            <td class="mono">2025</td>
+            <td><span class="placement silver">2nd place</span> <span class="placement bronze">3rd place</span></td>
+          </tr>
+          <tr>
+            <td>Global Game Jam</td>
+            <td>Caso ha Cose</td>
+            <td class="mono">—</td>
+            <td><span class="placement bronze">3rd — Best Game</span></td>
+          </tr>
+          <tr>
+            <td>Game Jam Plus</td>
+            <td>BallSwitch3D</td>
+            <td class="mono">—</td>
+            <td><span class="placement gold">EU Incubation</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Toolkit</div>
+      <h2>What's actually on the workbench.</h2>
+    </div>
+    <div class="skill-cols">
+      <div class="skill-col reveal">
+        <h4>Design</h4>
+        <ul>
+          <li>Rules &amp; mechanics design</li>
+          <li>Puzzle &amp; systems design</li>
+          <li>Playtesting &amp; balancing</li>
+          <li>Design documentation</li>
+          <li>Level design</li>
+        </ul>
+      </div>
+      <div class="skill-col reveal">
+        <h4>Tools</h4>
+        <ul>
+          <li>Unreal Engine 4 / 5 — Blueprint</li>
+          <li>Level Sequencer, Lumen</li>
+          <li>Git / GitHub</li>
+          <li>Adobe Photoshop</li>
+          <li>Excel / Google Sheets</li>
+        </ul>
+      </div>
+      <div class="skill-col reveal">
+        <h4>Leadership</h4>
+        <ul>
+          <li>Scrum Master facilitation</li>
+          <li>Multidisciplinary team leadership</li>
+          <li>Conflict resolution</li>
+          <li>Client communication</li>
+          <li>Mentorship</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="eyebrow reveal">Get in touch</div>
+    <h2 class="reveal">Got a ruleset that needs breaking — or building?</h2>
+    <p class="reveal">Open to game designer and rules/systems design roles, digital or tabletop.</p>
+    <div class="contact-links reveal">
+      <a class="btn btn-primary" href="mailto:marcellodts@gmail.com">marcellodts@gmail.com</a>
+      <a class="btn btn-ghost" href="https://wa.me/393516832345" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">MARCELLO DI STASO — GAME DESIGNER · BUILT FROM SCRATCH, NOT A TEMPLATE</div>
+</footer>
+
+<script>
+  // mobile nav toggle
+  const navtoggle = document.getElementById('navtoggle');
+  const navlinks = document.getElementById('navlinks');
+  navtoggle.addEventListener('click', () => navlinks.classList.toggle('open'));
+  navlinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navlinks.classList.remove('open')));
+
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+
+  // project filter
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('#cardGrid .card');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      cards.forEach(c => {
+        const show = f === 'all' || c.dataset.cat.includes(f);
+        c.style.display = show ? '' : 'none';
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
